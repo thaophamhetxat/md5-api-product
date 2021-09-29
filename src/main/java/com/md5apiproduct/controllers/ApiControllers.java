@@ -18,7 +18,7 @@ public class ApiControllers {
 
 
     @GetMapping("")
-    public ResponseEntity<Product> findAllHocVien() {
+    public ResponseEntity<Product> findAllProduct() {
         List<Product> products = iProductService.findAll();
         if (products.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
