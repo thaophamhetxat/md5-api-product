@@ -5,9 +5,7 @@ import com.md5apiproduct.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +19,34 @@ public class ApiControllers {
 
     @GetMapping("")
     public ResponseEntity<Product> findAllHocVien() {
-        List<Product> hocViens = iProductService.findAll();
-        if (hocViens.isEmpty()) {
+        List<Product> products = iProductService.findAll();
+        if (products.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity(hocViens, HttpStatus.OK);
+        return new ResponseEntity(products, HttpStatus.OK);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Product> save(@RequestBody Product product) {
+        return new ResponseEntity<>(iProductService.save(product), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> showEdit(@PathVariable long id) {
+        return new ResponseEntity<>(iProductService.findById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> edit(@RequestBody Product product) {
+        return new ResponseEntity<>(iProductService.save(product), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable long id) {
+        iProductService.delete(iProductService.findById(id));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
